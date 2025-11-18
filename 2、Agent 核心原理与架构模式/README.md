@@ -1,0 +1,4 @@
+- [AI Agent的核心技术与未来](https://mp.weixin.qq.com/s/y-JyvYaI3IQKE1ZM4RhiqA)
+- [大模型Agent知识笔记](https://mp.weixin.qq.com/s/TSioLS_RhrX57YEnY3mkag)
+- [AI Agent 主流的设计模式](https://mp.weixin.qq.com/s/7CZ6cHWQ-T9bmaWoJFwdwA)
+- [AI Agent基础知识.md](https://github.com/WeThinkIn/AIGC-Interview-Book/blob/main/AI%20Agent%E5%9F%BA%E7%A1%80/AI%20Agent%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.md)
