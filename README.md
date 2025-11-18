@@ -1,2 +1,2 @@
 # Agent_Learning_Roadmap
-This roadmap is designed to bridge the gap between traditional Go backend development and the emerging world of AI Agents. It offers a structured path to leveraging Go's concurrency and performance for building production-grade, autonomous intelligent systems.
+该路线图旨在弥合传统 Go 后端开发与新兴的 AI 代理领域之间的差距。它提供了一条结构化的路径，利用 Go 的并发性和高性能来构建生产级自主智能系统。
