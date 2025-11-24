@@ -10,6 +10,10 @@
 			State/History (状态与历史)： 记住用户是谁，之前聊了什么。
 			Memory (记忆)： 长期存储的关键信息。
 			Structured Outputs (结构化输出)： 保证输出机器可读。
+
+	我的理解：
+		提示词链路就是拆分用户任务，像一条定义好的链路，一步一步执行，提高了model的准确率
+		上下文工程通过prompt，tools，rag，memory，结构化输出，state/history，让model获得更多的外部知识以及上下文信息
 */
 
 package main
