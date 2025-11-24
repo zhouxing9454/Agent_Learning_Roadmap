@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>提示词链执行时序图</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            border-bottom: 3px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #555;
+            margin-top: 40px;
+            border-left: 4px solid #2196F3;
+            padding-left: 15px;
+        }
+        .diagram-container {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .mermaid {
+            text-align: center;
+        }
+        .code-block {
+            background: #f4f4f4;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #4CAF50;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>完整执行时序图</h1>
+
+    <div class="diagram-container">
+        <div class="mermaid">
+sequenceDiagram
+    participant Main as main函数
+    participant Config as 配置模块
+    participant LLM as LLM模型
+    participant Prompt1 as 提取提示词模板
+    participant Chain1 as 提取链
+    participant Prompt2 as 转换提示词模板
+    participant Chain2 as 转换链
+    participant Output as 输出
+
+    Main->>Config: 1. 读取 API Key
+    Main->>Config: 2. 读取 BaseURL
+    Config-->>Main: 配置信息
+    
+    Main->>LLM: 3. 初始化模型(Qwen/Qwen2.5-Coder-32B-Instruct)
+    LLM-->>Main: 模型就绪
+    
+    Main->>Prompt1: 4. 创建提取提示词模板
+    Prompt1-->>Main: 模板创建成功
+    
+    Main->>Prompt2: 5. 创建转换提示词模板
+    Prompt2-->>Main: 模板创建成功
+    
+    Main->>Chain1: 6. 构建提取链
+    Chain1-->>Main: 链编译成功
+    
+    Main->>Chain2: 7. 构建转换链
+    Chain2-->>Main: 链编译成功
+    
+    Note over Main: 输入文本:新款笔记本电脑型号配备 3.5 GHz 八核处理器、16GB 内存和 1TB NVMe 固态硬盘
+    
+    Main->>Chain1: 8. 执行提取链
+    Chain1->>Prompt1: 8.1 格式化提示词
+    Prompt1-->>Chain1: 格式化后的消息
+    Chain1->>LLM: 8.2 调用 LLM
+    Note over LLM: 处理提示词，提取技术规格
+    LLM-->>Chain1: Message{Content: "提取的规格..."}
+    Chain1->>Chain1: 8.3 Lambda 提取内容
+    Chain1-->>Main: 返回: string "3.5 GHz 八核处理器、16GB 内存、1TB NVMe 固态硬盘"
+    
+    Main->>Chain2: 9. 执行转换链
+    Chain2->>Chain2: 9.1 Lambda 包装
+    Chain2->>Prompt2: 9.2 格式化提示词
+    Prompt2-->>Chain2: 格式化后的消息
+    Chain2->>LLM: 9.3 调用 LLM
+    Note over LLM: 处理提示词，转换为 JSON 格式
+    LLM-->>Chain2: Message{Content: "JSON 字符串"}
+    Chain2->>Chain2: 9.4 Lambda 提取内容
+    Chain2-->>Main: 返回: string JSON格式
+    
+    Main->>Output: 10. 输出最终结果
+        </div>
+    </div>
+
+
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            },
+            sequence: {
+                diagramMarginX: 50,
+                diagramMarginY: 10,
+                actorMargin: 50,
+                width: 150,
+                height: 65,
+                boxMargin: 10,
+                boxTextMargin: 5,
+                noteMargin: 10,
+                messageMargin: 35
+            }
+        });
+    </script>
+</body>
+</html>
+

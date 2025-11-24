@@ -1,2 +1,2 @@
 ### 概览
-这本书[agentic design patterns](https://github.com/xindoo/agentic-design-patterns)由 Antonio Gulli 撰写，是一本构建智能系统的实战指南，它通过系统化地讲解 ReAct、反思（Reflection）、规划（Planning）等核心设计模式，帮助开发者跳出简单的 API 调用，设计并构建出具备自主推理、自我纠错及处理复杂任务能力的高可用 AI Agent 系统。
+​	这本书[Agentic Design Patterns](https://github.com/xindoo/agentic-design-patterns)由 Antonio Gulli 撰写，是一本构建智能系统的实战指南，它通过系统化地讲解 ReAct、反思（Reflection）、规划（Planning）等核心设计模式，帮助开发者跳出简单的 API 调用，设计并构建出具备自主推理、自我纠错及处理复杂任务能力的高可用 AI Agent 系统。
