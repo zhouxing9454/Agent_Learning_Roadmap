@@ -53,7 +53,7 @@ func main() {
 
 	// config: 创建 OpenAI 兼容模型的配置对象
 	config := &openai.ChatModelConfig{
-		Model:       "Qwen/Qwen2.5-Coder-32B-Instruct", // Model: 指定要使用的模型名称
+		Model:       "qwen/Qwen2.5-Coder-32B-Instruct", // Model: 指定要使用的模型名称
 		APIKey:      apiKey,                            // APIKey: 设置 API 密钥，用于身份验证
 		Temperature: float32Ptr(0),                     // Temperature: 控制模型输出的随机性(0: 每次相同输入得到相同输出,0.0-2.0: 值越大，输出越随机和创造性)
 	}
