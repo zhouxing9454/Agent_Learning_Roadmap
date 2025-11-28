@@ -27,6 +27,8 @@ package main
 
 import (
 	"context"
+	"crypto/rand"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -51,6 +53,19 @@ import (
 // float32Ptr: 辅助函数，将 float32 值转换为 *float32 指针
 func float32Ptr(f float32) *float32 {
 	return &f
+}
+
+// generateDocID: 生成文档ID（使用时间戳+随机数）
+func generateDocID() string {
+	// 使用时间戳（纳秒）+ 随机字节生成唯一ID
+	timestamp := time.Now().UnixNano()
+	randomBytes := make([]byte, 8)
+	if _, err := rand.Read(randomBytes); err != nil {
+		// 如果随机数生成失败，使用时间戳
+		return fmt.Sprintf("doc_%d", timestamp)
+	}
+	randomHex := hex.EncodeToString(randomBytes)
+	return fmt.Sprintf("doc_%d_%s", timestamp, randomHex)
 }
 
 // ========== 短期记忆：Redis 存储 ==========
@@ -294,6 +309,7 @@ func NewLongTermMemory(ctx context.Context, esAddr, esUser, esPassword, indexNam
 		fieldContent       = "content"
 		fieldContentVector = "content_vector"
 		fieldMetadata      = "metadata"
+		fieldDocID         = "doc_id" // 文档ID字段
 	)
 
 	// 4. 创建索引器
@@ -303,6 +319,12 @@ func NewLongTermMemory(ctx context.Context, esAddr, esUser, esPassword, indexNam
 		BatchSize: 5,
 		DocumentToFields: func(ctx context.Context, doc *schema.Document) (map[string]es8Indexer.FieldValue, error) {
 			fields := make(map[string]es8Indexer.FieldValue)
+			// 文档ID字段：存储文档ID
+			if doc.ID != "" {
+				fields[fieldDocID] = es8Indexer.FieldValue{
+					Value: doc.ID,
+				}
+			}
 			// 内容字段：存储原始文本，并设置 EmbedKey 指向向量字段
 			// EmbedKey 表示：对这个字段的值进行向量化，并将向量存储到 content_vector 字段
 			// 注意：不需要单独定义 content_vector 字段，EmbedKey 会自动创建它
@@ -337,7 +359,6 @@ func NewLongTermMemory(ctx context.Context, esAddr, esUser, esPassword, indexNam
 		}),
 		ResultParser: func(ctx context.Context, hit types.Hit) (doc *schema.Document, err error) {
 			doc = &schema.Document{
-				ID:       *hit.Id_,
 				Content:  "",
 				MetaData: make(map[string]any),
 			}
@@ -345,6 +366,17 @@ func NewLongTermMemory(ctx context.Context, esAddr, esUser, esPassword, indexNam
 			var src map[string]any
 			if err = json.Unmarshal(hit.Source_, &src); err != nil {
 				return nil, err
+			}
+
+			// 解析文档ID：优先使用source中的doc_id，如果没有则使用hit.Id_
+			if val, ok := src[fieldDocID]; ok {
+				if docID, ok := val.(string); ok && docID != "" {
+					doc.ID = docID
+				} else {
+					doc.ID = *hit.Id_
+				}
+			} else {
+				doc.ID = *hit.Id_
 			}
 
 			// 解析字段
@@ -390,6 +422,11 @@ func (ltm *LongTermMemory) Store(ctx context.Context, content string, metadata m
 		MetaData: metadata,
 	}
 
+	// 如果文档没有ID，生成一个（确保doc_id字段能被正确存储）
+	if doc.ID == "" {
+		doc.ID = generateDocID()
+	}
+
 	ids, err := ltm.indexer.Store(ctx, []*schema.Document{doc})
 	if err != nil {
 		return "", fmt.Errorf("存储长期记忆失败: %w", err)
@@ -399,6 +436,8 @@ func (ltm *LongTermMemory) Store(ctx context.Context, content string, metadata m
 		return "", fmt.Errorf("存储失败：未返回 ID")
 	}
 
+	// 返回索引器返回的ID（可能与doc.ID相同，也可能不同，取决于索引器的实现）
+	// 但doc_id字段中存储的是doc.ID，这样可以确保检索时能获取到原始ID
 	return ids[0], nil
 }
 
