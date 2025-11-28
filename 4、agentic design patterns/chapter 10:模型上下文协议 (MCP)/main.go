@@ -229,13 +229,13 @@ func main() {
 	// ============================================================================
 	// 步骤 1: 从环境变量加载配置
 	// ============================================================================
-	openaiAPIKey := "sk-hhkjuxmsyxnamtchxegjicgkiujdcvjxqalitxfgtuywpsvu"
+	openaiAPIKey := os.Getenv("OPENAI_API_KEY")
 	if openaiAPIKey == "" {
 		fmt.Println("错误: 未设置 OPENAI_API_KEY 环境变量")
 		os.Exit(1)
 	}
 
-	openaiBaseURL := "https://api.siliconflow.cn/v1" // 可选：用于自定义 API 端点
+	openaiBaseURL := os.Getenv("OPENAI_BASE_URL") // 可选：用于自定义 API 端点
 
 	// MCP 服务器地址（如果未设置，默认为 localhost:8080/mcp）
 	mcpServerURL := os.Getenv("MCP_SERVER_URL")
