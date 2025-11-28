@@ -53,9 +53,9 @@ func main() {
 
 	// config: 创建 OpenAI 兼容模型的配置对象
 	config := &openai.ChatModelConfig{
-		Model:       "qwen/Qwen2.5-Coder-32B-Instruct", // Model: 指定要使用的模型名称
-		APIKey:      apiKey,                            // APIKey: 设置 API 密钥，用于身份验证
-		Temperature: float32Ptr(0),                     // Temperature: 控制模型输出的随机性(0: 每次相同输入得到相同输出,0.0-2.0: 值越大，输出越随机和创造性)
+		Model:       "deepseek-ai/DeepSeek-V3.1", // Model: 指定要使用的模型名称
+		APIKey:      apiKey,                      // APIKey: 设置 API 密钥，用于身份验证
+		Temperature: float32Ptr(0),               // Temperature: 控制模型输出的随机性(0: 每次相同输入得到相同输出,0.0-2.0: 值越大，输出越随机和创造性)
 	}
 
 	// 如果设置了自定义 BaseURL，则使用它（支持代理或兼容 API）

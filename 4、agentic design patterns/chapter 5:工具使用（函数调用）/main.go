@@ -112,7 +112,7 @@ func main() {
 
 	// 创建 OpenAI ChatModel 配置
 	config := &openai.ChatModelConfig{
-		Model:       "qwen/Qwen2.5-Coder-32B-Instruct", // 需要支持工具调用的模型
+		Model:       "deepseek-ai/DeepSeek-V3.1", // 需要支持工具调用的模型
 		APIKey:      apiKey,
 		Temperature: float32Ptr(0), // 使用较低的温度以获得更确定性的输出
 	}

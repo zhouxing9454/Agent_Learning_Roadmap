@@ -296,7 +296,7 @@ func main() {
 
 	// 创建 OpenAI ChatModel 配置
 	config := &openai.ChatModelConfig{
-		Model:       "qwen/Qwen2.5-Coder-32B-Instruct",
+		Model:       "deepseek-ai/DeepSeek-V3.1",
 		APIKey:      apiKey,
 		Temperature: float32Ptr(0.3),
 	}

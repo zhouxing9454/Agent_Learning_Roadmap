@@ -63,7 +63,7 @@ func main() {
 
 	// 创建 OpenAI ChatModel 配置
 	config := &openai.ChatModelConfig{
-		Model:       "qwen/Qwen2.5-Coder-32B-Instruct", // 或您想要使用的模型
+		Model:       "deepseek-ai/DeepSeek-V3.1", // 或您想要使用的模型
 		APIKey:      apiKey,
 		Temperature: float32Ptr(0), // 设置为 0 以获得确定性输出
 	}
